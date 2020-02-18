@@ -72,7 +72,7 @@ class RequestStorage:
             'id': request_id,
             'method': request.command,
             'path': request.path,
-            'headers': dict(request.headers),
+            'headers': self._consolidate_headers(request.headers._headers),
             'response': None
         }
 

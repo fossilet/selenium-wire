@@ -104,7 +104,7 @@ class ProxyRequestHandler(BaseHTTPRequestHandler):
         conn = None
         try:
             conn = self.create_connection(origin)
-            conn.request(self.command, path, req_body, dict(req.headers))
+            conn.request(self.command, path, req_body, req.headers)
             res = conn.getresponse()
 
             version_table = {10: 'HTTP/1.0', 11: 'HTTP/1.1'}

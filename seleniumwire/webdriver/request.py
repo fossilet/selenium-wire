@@ -138,7 +138,7 @@ class Request:
         self._client = client
         self.method = data['method']
         self.path = data['path']
-        self.headers = CaseInsensitiveDict(data['headers'])
+        self.headers = data['headers']
         if data['response'] is not None:
             self.response = Response(self._data['id'], data['response'], client)
         else:
