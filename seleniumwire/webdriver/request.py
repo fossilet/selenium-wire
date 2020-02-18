@@ -182,7 +182,7 @@ class Response:
         self._data = data
         self.status_code = data['status_code']
         self.reason = data['reason']
-        self.headers = CaseInsensitiveDict(data['headers'])
+        self.headers = data['headers']
 
     @property
     def body(self):

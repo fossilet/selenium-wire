@@ -16,6 +16,19 @@ log = logging.getLogger(__name__)
 REMOVE_DATA_OLDER_THAN_DAYS = 1
 
 
+class HeaderDict(list):
+    def __init__(self, lt: [tuple]):
+        super().__init__(lt)
+        self.lt = lt
+
+    def get(self, k, default=None):
+        for t in self.lt:
+            if t[0] == k:
+                return t[1]
+        else:
+            return default
+
+
 class RequestStorage:
     """Responsible for saving request and response data that passes through the proxy server,
     and provding an API to retrieve that data.
@@ -107,7 +120,7 @@ class RequestStorage:
         response_data = {
             'status_code': response.status,
             'reason': response.reason,
-            'headers': dict(response.headers)
+            'headers': self._consolidate_headers(response.getheaders())
         }
 
         request_dir = self._get_request_dir(request_id)
@@ -117,6 +130,11 @@ class RequestStorage:
             self._save(response_body, request_dir, 'responsebody')
 
         indexed_request.has_response = True
+
+    @staticmethod
+    def _consolidate_headers(headers: HeaderDict):
+        return HeaderDict(headers)
+
 
     def _get_indexed_request(self, request_id):
         with self._lock:
